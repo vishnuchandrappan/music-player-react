@@ -1,0 +1,24 @@
+@mixin flex($ai: center) {
+  display: flex;
+  align-items: $ai;
+}
+
+@mixin flex-aic($jc: center) {
+  @include flex;
+  justify-content: $jc;
+}
+
+@mixin flex-ai($ai: center, $jc: center) {
+  @include flex($ai);
+  justify-content: $jc;
+}
+
+@mixin flex-col-aic($jc: center) {
+  @include flex-aic($jc);
+  flex-direction: column;
+}
+
+@mixin flex-col-ai($ai: center, $jc: center) {
+  @include flex-ai($ai, $jc);
+  flex-direction: column;
+}

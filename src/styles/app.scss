@@ -1,0 +1,61 @@
+@import "./variables";
+@import "./mixins";
+@import "./player";
+@import "./song";
+@import "./library";
+@import "./nav";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-1;
+}
+
+.root {
+  display: flex;
+}
+
+.app {
+  width: 100vw;
+  transition: 0.3s all ease;
+  &.with-library {
+    width: calc(100vw - 400px);
+    margin-left: 400px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .app {
+    &.with-library {
+      width: calc(100vw);
+      margin-left: 0;
+    }
+  }
+}
+
+svg {
+  cursor: pointer;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(155, 155, 155, 0.7);
+    border-radius: 20px;
+    border: transparent;
+  }
+}

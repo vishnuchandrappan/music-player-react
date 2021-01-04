@@ -1,0 +1,20 @@
+.song {
+  min-height: 60vh;
+  @include flex-col-aic(space-between);
+
+  &__cover {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: bottom;
+    margin-top: 1rem;
+  }
+
+  &__details {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-self: center;
+  }
+}

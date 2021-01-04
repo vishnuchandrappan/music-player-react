@@ -4,18 +4,35 @@ import { App } from "./App";
 import Hammer from "hammerjs";
 
 export const AppContainer = () => {
+  // list of songs
   const [songs] = useState(data);
+
+  // currently playing song's index
   const [currentSong, setCurrentSong] = useState(0);
+
+  // play or pause ?
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // song info currentTime and total duration
   const [songInfo, setSongInfo] = useState({
     currentTime: 0,
     duration: 0,
   });
+
+  // bool to check if library is open
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
 
+  /**
+   * audioRef for handling <audio></audio> tag
+   * appRef for hammerjs, handling swipes
+   */
   const audioRef = useRef(null);
   const appRef = useRef(null);
 
+  /**
+   * @input index integer
+   * used in library to select songs
+   */
   const handleSelect = useCallback(
     async (index) => {
       await setCurrentSong(index);
@@ -24,6 +41,7 @@ export const AppContainer = () => {
     [isPlaying]
   );
 
+  // for changing to previous song.
   const previousSong = useCallback(() => {
     if (currentSong === 0) {
       handleSelect(songs.length - 1);
@@ -32,18 +50,25 @@ export const AppContainer = () => {
     }
   }, [handleSelect, currentSong, songs]);
 
+  // for changing to next song
   const nextSong = useCallback(() => {
     handleSelect((currentSong + 1) % songs.length);
   }, [currentSong, handleSelect, songs]);
 
+  /**
+   * Checks for isPlaying
+   * when its value is changed, handles audioRef's play and pause
+   */
   useEffect(() => {
     isPlaying ? audioRef.current.play() : audioRef.current.pause();
   }, [isPlaying]);
 
+  // show and hide library
   const toggleLibrary = useCallback(() => {
     setIsLibraryOpen((isLibraryOpen) => !isLibraryOpen);
   }, [setIsLibraryOpen]);
 
+  // for seek functionality
   const setCurrentTime = useCallback(
     (time) => {
       audioRef.current.currentTime = time;
@@ -55,6 +80,9 @@ export const AppContainer = () => {
     [setSongInfo, songInfo]
   );
 
+  /**
+   * hammerjs swipe implementation
+   */
   useEffect(() => {
     const hammerTime = new Hammer(appRef.current);
     hammerTime.on("swipeleft", (_e) => {
@@ -66,10 +94,12 @@ export const AppContainer = () => {
     });
   }, [nextSong, previousSong]);
 
+  // change play => pause and vice-versa
   const togglePlay = () => {
     setIsPlaying((isPlaying) => !isPlaying);
   };
 
+  // updates time to songInfo
   const handleTimeUpdate = (e) => {
     setSongInfo({
       ...songInfo,
@@ -77,6 +107,10 @@ export const AppContainer = () => {
     });
   };
 
+  /**
+   * calls auto when audio src is loaded.
+   * used to set duration of song
+   */
   const handleLoad = (e) => {
     setSongInfo({
       ...songInfo,
@@ -84,6 +118,7 @@ export const AppContainer = () => {
     });
   };
 
+  /** handles seek / drag event */
   const handleDrag = (e) => {
     setCurrentTime(e.target.value);
   };
